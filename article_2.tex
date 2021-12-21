@@ -1,0 +1,285 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Journal Article
+% LaTeX Template
+% Version 1.4 (15/5/16)
+%
+% This template has been downloaded from:
+% http://www.LaTeXTemplates.com
+%
+% Original author:
+% Frits Wenneker (http://www.howtotex.com) with extensive modifications by
+% Vel (vel@LaTeXTemplates.com)
+%
+% License:
+% CC BY-NC-SA 3.0 (http://creativecommons.org/licenses/by-nc-sa/3.0/)
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%----------------------------------------------------------------------------------------
+%	PACKAGES AND OTHER DOCUMENT CONFIGURATIONS
+%----------------------------------------------------------------------------------------
+
+\documentclass[twoside,twocolumn]{article}
+
+\usepackage{blindtext} % Package to generate dummy text throughout this template 
+
+\usepackage{pgf}
+\usepackage[sc]{mathpazo} % Use the Palatino font
+\usepackage{longtable}
+\usepackage[T1]{fontenc} % Use 8-bit encoding that has 256 glyphs
+\linespread{1.05} % Line spacing - Palatino needs more space between lines
+\usepackage{microtype} % Slightly tweak font spacing for aesthetics
+
+\usepackage[english]{babel} % Language hyphenation and typographical rules
+
+\usepackage[hmarginratio=1:1,top=32mm,columnsep=20pt]{geometry} % Document margins
+\usepackage[hang, small,labelfont=bf,up,textfont=it,up]{caption} % Custom captions under/above floats in tables or figures
+\usepackage{booktabs} % Horizontal rules in tables
+
+\usepackage{lettrine} % The lettrine is the first enlarged letter at the beginning of the text
+\usepackage{amsmath}
+\usepackage{enumitem} % Customized lists
+\setlist[itemize]{noitemsep} % Make itemize lists more compact
+
+\usepackage{abstract} % Allows abstract customization
+\renewcommand{\abstractnamefont}{\normalfont\bfseries} % Set the "Abstract" text to bold
+\renewcommand{\abstracttextfont}{\normalfont\small\itshape} % Set the abstract itself to small italic text
+
+\usepackage{titlesec} % Allows customization of titles
+\renewcommand\thesection{\Roman{section}} % Roman numerals for the sections
+\renewcommand\thesubsection{\roman{subsection}} % roman numerals for subsections
+\titleformat{\section}[block]{\large\scshape\centering}{\thesection.}{1em}{} % Change the look of the section titles
+\titleformat{\subsection}[block]{\normalsize\itshape}{\thesubsection. }{0em}{} % Change the look of the section titles
+\titlespacing*{\subsection}{0pt}{2pt}{1pt}
+
+\usepackage{fancyhdr} % Headers and footers
+\pagestyle{fancy} % All pages have headers and footers
+\fancyhead{} % Blank out the default header
+\fancyfoot{} % Blank out the default footer
+\fancyhead[C]{Churn Prediction $\bullet$ December 2021 $\bullet$ Introduction to DS 1001} % Custom header text
+\fancyfoot[RO,LE]{\thepage} % Custom footer text
+
+\usepackage{titling} % Customizing the title section
+\usepackage{layouts}
+\usepackage{hyperref} % For hyperlinks in the PDF
+
+%----------------------------------------------------------------------------------------
+%	TITLE SECTION
+%----------------------------------------------------------------------------------------
+
+\setlength{\droptitle}{-4\baselineskip} % Move the title up
+
+\pretitle{\begin{center}\Huge\bfseries} % Article title formatting
+\posttitle{\end{center}} % Article title closing formatting
+\title{Churn Prediction in Retail Banking Customers} % Article title
+\author{%
+\textsc{Adi Srikanth $\bullet$ Andre Chen $\bullet$ David Roth} \\[1ex] % Your name
+\textsc{Jin Ishizuka $\bullet$ Lev Paciorkowski} \\[1ex] % Your name
+\normalsize NYU Center for Data Science \\ % Your institution
+% \normalsize \href{mailto:john@smith.com}{john@smith.com} % Your email address
+%\and % Uncomment if 2 authors are required, duplicate these 4 lines if more
+%\textsc{Jane Smith}\thanks{Corresponding author} \\[1ex] % Second author's name
+%\normalsize University of Utah \\ % Second author's institution
+%\normalsize \href{mailto:jane@smith.com}{jane@smith.com} % Second author's email address
+}
+\date{\today} % Leave empty to omit a date
+\renewcommand{\maketitlehookd}{%
+\begin{abstract}
+\noindent Customer "churn" refers to the rate at which...
+\end{abstract}
+}
+
+%----------------------------------------------------------------------------------------
+
+\begin{document}
+
+% Print the title
+\maketitle
+
+%----------------------------------------------------------------------------------------
+%	ARTICLE CONTENTS
+%----------------------------------------------------------------------------------------
+\section{Introduction}
+
+\lettrine[nindent=0em,lines=2]{I} n this analysis, we look at a dataset of $10,000$ retail banking customers and try to predict whether an individual customer is likely to "churn", that is, if they are likely to close their account and cease their financial relationship with their bank.
+
+\section{Data Summary}
+
+\lettrine[nindent=0em,lines=2]{O}UR dataset contains information on customer churn at a retail bank, specifically features/predictor variables and a target variable ($0$ if the customer churned, $1$ if the customer is still at the bank). The features include general information about the customers including demographics, socioeconomic information, and the level of engagement each customer has with the bank. Our goal is to study the relationships between the customer predictor variables and their probability of churning to understand what leads to customer churn at this bank.
+    
+We determined that investigating this dataset would be broadly useful as practice for future roles as data scientists in industry. Specifically, a very common use case in both consumer and enterprise-facing companies is understanding leading indicators of churn, as churn contributes to significant revenue erosion and needs to be proactively addressed. This dataset offers a great opportunity for us to practice not only the technical skills involved in determining predictors of customer churn, but also the more business-oriented aspects of asking suitable questions and presenting a cohesive conclusion that could benefit our hypothetical company.
+
+\noindent The data is broken down as follows:\smallskip\\
+\noindent\textbf{Rows}: Each row represents an individual customer of the bank, providing information about that customer and whether or not they churned, which we assume in this context means they closed their account with the bank and stopped doing business with them altogether.\smallskip\\
+\noindent\textbf{Columns}: The 14th and last column of the dataset (“Exited”) is a binary target variable that indicates whether a customer churned (0) or not (1). The first 13 columns of the dataset include information about each individual customer, of which a large subset were identified as potentially useful predictor variables and are described in detail below. We omitted columns like “CustomerId” and “Surname” from the columns listed below, as these columns likely have no relationship with a customer’s likelihood of churning:
+\begin{itemize}
+  \item \textit{CreditScore}: The customer’s credit score on a scale from 350 (worst) to 850 (best)
+  \item \textit{Geography}: The customer’s country of residence (dataset includes France, Germany, and Spain)
+  \item \textit{Gender}: Male or Female
+  \item \textit{Age}: Age of customer $(18-92)$
+  \item \textit{Tenure}: How long the customer has been with the bank, in years.
+  \item \textit{Balance}: Customer balance to date. (Note: customers who have closed their accounts with the bnk may still have uncollected balances)
+  \item \textit{NumOfProducts}: The number of bank products used by the customer.
+  \item \textit{HasCrCard}: Whether the customer has a credit card $(1)$ or not $(0)$
+  \item \textit{IsActiveMember}: Binary variable indicating if customer's activity is above the bank's minimim threshold for ``Active''.
+  \item \textit{Estimated Salary}: Customer's estimated yearly salary.
+\end{itemize}
+
+\section{Hypothesis Testing}
+\small \textit{Do customers with varying levels of engagement with the bank have significantly different probabilities of churn? What does this tell us about the measures of engagement which matter the most?}\medskip
+
+\lettrine[nindent=0em,lines=2]{O}UR ultimate goal is to determine indicators of churn that the bank can act on, so that we could then recommend specific areas the bank could target for improvement in their interactions with customers. We accomplish this by defining customer profiles based on three measures of engagement (\textit{NumOfProducts}, \textit{IsActiveMember} and \textit{Tenure}), and then implement hypothesis testing to see if churn proportion is significantly different from one profile to another.
+
+\subsection*{``Product-Driven'' Customers}
+We find that only about 3\% of customers have more than two products with the bank, and of them, 85.9\% churned compared to just 18.2\% of non Product-Driven customers.
+\begin{align*}
+  H_0: P(churn)_{\text{\tiny{product-driven}}} &= P(churn)_{\text{\tiny{non-product-driven}}}\\
+  H_1: P(churn)_{\text{\tiny{product-driven}}} &> P(churn)_{\text{\tiny{non-product-driven}}}
+\end{align*}
+
+\subsection*{``Active'' Customers}
+Customers are evenly split between Active and not Active (as determined by the bank), and only 14.3\% of Active customers churned, compared to 26.9\% of non-Active customers.
+\begin{align*}
+  H_0: P(churn)_{\text{\tiny{active}}} &= P(churn)_{\text{\tiny{non-active}}}\\
+  H_1: P(churn)_{\text{\tiny{active}}} &> P(churn)_{\text{\tiny{non-active}}}
+\end{align*}
+
+\subsection*{``Established'' Customers}
+We find that Customers with tenures longer than 1 year churned at a rate of 20\%, compared to new customers, who churned at a rate of 22.6\%.
+\begin{align*}
+  H_0: P(churn)_{\text{\tiny{established}}} &= P(churn)_{\text{\tiny{new}}}\\
+  H_1: P(churn)_{\text{\tiny{established}}} &> P(churn)_{\text{\tiny{new}}}
+\end{align*}
+
+\subsection*{\large{Results}}
+In general, Product-Driveness and “Active”-ness are highly significant predictors of churn at $\alpha = 0.005$, while Tenure is not (See Table \ref{table:significance}).  Although Product-Driven customers are quite rare, they have a much greater tendency to churn compared to mainstream customers who use only one or two products. Perhaps this could be an indication of so-called credit card “hopping”, but deeper investigation would be required to evaluate this. Based on these results, the bank can be confident in how it assesses “Active” customers, but might consider interventions to disincentivize customers from becoming Product-Driven. In contrast, a customer’s Tenure should not be a central focus.
+\begin{table}
+  \centering
+  \caption{Significance Results}
+  \begin{tabular}{llr}
+    \toprule
+    {} &                Test &        p-value \\
+    \midrule
+    0 &  \textit{Product-Drivenness} &  $2.9e-196$ \\
+    1 &     \textit{''Active''-ness} &   $3.0e-55$ \\
+    2 &              \textit{Tenure} &   $1.2e-02$ \\
+    \bottomrule  
+  \end{tabular}
+  \label{table:significance}
+\end{table}
+
+\begin{figure}
+  \begin{center}
+    \resizebox{7cm}{!}{
+      \input{corr.pgf}
+    }
+  \end{center}
+  \caption{Correlations among predictor variables.}
+\end{figure}
+
+\section{Feature Selection}
+
+\lettrine[nindent=0em,lines=2]{I} n order to remove excess “noise” 
+from our model, we embark on feature selection. 
+Specifically, we implement the feature selection process known as the Boruta algorithm. 
+Boruta functions by creating a copy of each variable in the dataset, randomizing the copy, and attaching it back to the dataset. 
+For example, if a dataset has original columns A and B, Boruta takes that dataset and produces a new dataset with columns \textit{A}, \textit{A\_Copy}, \textit{B}, and \textit{B\_Copy}, where \textit{A\_Copy} and \textit{B\_Copy} are shuffled versions of A and B, respectively (consider the copy columns essentially a random number generator sampling from the range of their original columns). 
+Table \ref{table:boruta} illustrates this example.
+\begin{table}
+  \centering
+  \caption{Boruta Example}
+  \begin{tabular}{lllll}
+  \toprule
+   \textit{A} &  \textit{A\_copy} &  \textit{B} &  \textit{B\_copy} \\
+  \midrule
+   1 &       5 & 22 &      30 \\
+   5 &       6 & 25 &      21 \\
+   6 &       7 & 21 &      25 \\
+   7 &       1 & 30 &      22 \\
+  \bottomrule
+  \end{tabular}
+  \label{table:boruta}
+  \end{table}
+  
+Next, Boruta takes all of the ``copy" columns and selects the copy column that was the best predictor of the dependent variable. 
+If any of the original columns is a worse indicator of the dependent variable than the best copy column, 
+that original column is removed. This entire process is repeated to ensure statistical significance. 
+The foundational idea is that no variable in the data set is a worse predictor than a random column of data – each variable must have a non-random contribution towards predicting the dependent variable.
+
+Ultimately, we whittle our original set of variables down to seven variables: age, estimated salary,  credit score, country of origin, number of products owned, member status, and remaining balance. We use these variables in the next step of our analysis, model implementation, tuning, and evaluation.
+
+%------------------------------------------------
+
+\section{Model Implementation, Tuning, \& Evaluation}
+\lettrine[nindent=0em,lines=2]{T}o build an effective model using our dataset, we take a rapid prototyping approach by optimizing and comparing various supervised classification models in their ability to predict churn. Below we detail steps in our generalized approach to assessing each model, including train/test split, hyperparameter tuning, and model evaluation:
+
+\noindent\subsection{Evaluation Metric} Considering the costly impacts of both false positives (wasting resources on customers not at risk of churn) and false negatives (losing customers), a reasonable metric that helps us balance between the two in model optimization is the F1 score. Specifically, we look at the F1 score for our “positive” predictions (overall ability to predict churn) as well as the macro-averaged F1 (unweighted average of F1 scores on predicting churn and retention, respectively) as a secondary metric.
+
+\noindent\subsection{Train/Test Split} We used an 80/20 split for training/testing (holdout). The 20\% holdout set was used only to compute a final evaluation metric for a given model after optimizing on the training set.
+
+\noindent\subsection{Standardization} For models that require standardization (e.g. Logistic Regression, SVM, KNN), we center the data and scale to unit variance.
+
+\noindent \subsection{Hyperparameter Tuning} For each model, we identify its most important hyperparameters and define a reasonable search space for each parameter. We use grid search or randomized search to approximate an optimal combination of hyperparameters based on F1 score.
+
+\noindent \subsection{Final Evaluation} For each optimized model, we compute its F1 score by comparing its predictions on the test set features against the true values of the test set target variable. F1 scores for five different models are reported in Table \ref{table:modelperf}
+
+\section{Results}
+\begin{table}
+  \centering
+  \caption{Model Performance}
+  \begin{tabular}{lll}
+  \toprule
+                   Model &    F1 & Macro Averaged F1 \\
+  \midrule
+      Logistic Regresion &   TBD &               TBD \\
+     K-Nearest Neighbors &  0.55 &              0.73 \\
+  Support Vector Machine &  0.54 &              0.73 \\
+           Random Forest &   0.6 &              0.75 \\
+                 XGBoost &  0.57 &              0.75 \\
+  \bottomrule
+  \end{tabular}
+  \label{table:modelperf}
+  \end{table}
+  
+  
+    
+
+% \blindtext % Dummy text
+
+% \begin{equation}
+% \label{eq:emc}
+% e = mc^2
+% \end{equation}
+
+% \blindtext % Dummy text
+
+%------------------------------------------------
+
+\section{Discussion}
+
+\subsection{Subsection One}
+
+% A statement requiring citation \cite{Figueredo:2009dg}.
+% \blindtext % Dummy text
+
+\subsection{Subsection Two}
+
+% \blindtext % Dummy text
+
+%----------------------------------------------------------------------------------------
+%	REFERENCE LIST
+%----------------------------------------------------------------------------------------
+
+% \begin{thebibliography}{99} % Bibliography - this is intentionally simple in this template
+
+% \bibitem[Figueredo and Wolf, 2009]{Figueredo:2009dg}
+% Figueredo, A.~J. and Wolf, P. S.~A. (2009).
+% \newblock Assortative pairing and life history strategy - a cross-cultural
+%   study.
+% \newblock {\em Human Nature}, 20:317--330.
+ 
+% \end{thebibliography}
+
+%----------------------------------------------------------------------------------------
+
+\end{document}
